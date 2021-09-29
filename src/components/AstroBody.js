@@ -8,11 +8,16 @@ const Planet = React.forwardRef((props, ref) => {
   });
 
   // Subscribe this component to the render-loop, rotate the mesh every frame
-  useFrame((state, delta) => (ref.current.rotation.y += 0.001));
+  useFrame((state, delta) => {
+    if (props.static) {
+      return;
+    }
+    ref.current.rotation.y += 0.001;
+  });
 
   return (
     <mesh {...props} ref={ref}>
-      <sphereGeometry args={[5, 64, 64]} />
+      <sphereGeometry args={[props.radius, 64, 64]} />
       <meshStandardMaterial {...textures} />
     </mesh>
   );
